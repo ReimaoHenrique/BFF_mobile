@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id              Int      @id @default(autoincrement())
+  publicId        String   @unique @default("CORP")
+  name            String   @unique
+  createdAt       DateTime @default(now())
+  users           User[]
+  createdBy       Int?
+}
+
+model User {
+  id                 Int       @id @default(autoincrement())
+  googleId           String?   @unique
+  name               String?
+  picture            String?
+  email              String    @unique
+  password           String?
+  role               Role      @default(COLLABORATOR)
+  function           String?
+  user_type          String[]  @default(["Pending"])
+  features           String[]  @default(["Encarregado"])
+  access             String    @default("default")
+  companyId          Int
+  status             Boolean   @default(true)
+  createdAt          DateTime  @default(now())
+  @@index([companyId])
+  companies Company[]
+}
+
+enum Role {
+  OWNER
+  COLLABORATOR
+}
