@@ -9,9 +9,9 @@ async function main() {
   // Cria as empresas (oficinas)
   const companies = await prisma.company.createMany({
     data: [
-      { name: 'Oficina Turbo', createdBy: 1 },
-      { name: 'AutoMec Reimão', createdBy: 1 },
-      { name: 'PitStop Express', createdBy: 2 },
+      { name: 'Oficina Turbo', publicId: 'CORP1', createdBy: 1 },
+      { name: 'AutoMec Reimão', publicId: 'CORP2', createdBy: 1 },
+      { name: 'PitStop Express', publicId: 'CORP3', createdBy: 2 },
     ],
   })
   console.log(`🏢 Criadas ${companies.count} empresas`)
@@ -25,7 +25,7 @@ async function main() {
       role: 'OWNER',
       function: 'Gerente Técnico',
       features: ['Gestão', 'Análise de Diagnóstico'],
-      company: { connect: { id: 1 } },
+      companyId: 1,
     },
   })
 
@@ -37,7 +37,7 @@ async function main() {
       role: 'OWNER',
       function: 'Supervisor de Oficina',
       features: ['Gestão de equipe', 'Controle de estoque'],
-      company: { connect: { id: 2 } },
+      companyId: 2,
     },
   })
 
